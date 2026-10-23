@@ -1,99 +1,108 @@
-# GoldenSpiral (黄金螺旋) — 斐波那契均线簇与“向右看”抵扣价推演 Demo
+# GoldenSpiral (黄金螺旋) — Fibonacci MA & Multi-Indicator Resonance Demo
+# GoldenSpiral (黄金螺旋) — 斐波那契均线簇与多指标共振公开演示版
 
-> **公开演示版说明 (Public Showcase Edition)**  
-> 本仓库是 **GoldenSpiral AI Agent Skill** 的公开概念演示版本，旨在介绍**斐波那契均线体系**与**“向右看”抵扣价微分推演**的基础数学逻辑与可视化效果。仅包含基础概念说明与通用可视化脚本，不包含私密实盘战法参数、微观盘口细则及内部课程资料。
-
----
-
-## 一、核心理念：为什么叫“向右看”？
-
-传统的均线分析往往是“向左看”（后视镜思维）——等金叉或死叉已经发生后再做反应，天然带有滞后性。  
-**GoldenSpiral（黄金螺旋）** 的核心在于通过简单移动平均线（SMA）的一阶差分性质，利用历史**抵扣价（间隔线）**在当下直接推演未来均线的拐头方向与斜率变化，从而实现**“向右看”（前瞻性推演）**。
+> **Public Showcase Edition / 公开演示版说明**  
+> **[EN]** This repository is a lightweight public showcase of the **GoldenSpiral AI Agent Skill**. It demonstrates the core **Fibonacci Moving Average Matrix**, **Lookahead Differential Deduction**, and **Multi-Indicator Resonance (`BOLL` + `KDJ` + `MACD`)** using **NVIDIA (`NVDA`)** Daily K-lines as a case study. Proprietary intraday order-book rules and full course materials are kept in a separate private repository.  
+> **[中文]** 本仓库是 **GoldenSpiral AI Agent Skill** 的公开概念演示版本。以 **英伟达 (`NVDA`)** 日 K 线为例，展示**斐波那契均线簇**、**“向右看”抵扣价差分推演**以及 **底部多指标共振（`KDJ` + `BOLL` + `MACD`）** 的可视化分析逻辑。完整的盘口微观规则与内部资料保存在私有库中，不对外公开。
 
 ---
 
-## 二、核心概念简述
+## 📊 Visual Case Study: NVIDIA (`NVDA`) Daily K-Line
+## 📊 可视化实战示例：英伟达 (`NVDA`) 日 K 线推演
 
-### 1. 斐波那契八均线系统 (Fibonacci 8-MA Matrix)
+![NVDA Demo Chart](samples/nvda_demo_chart.png)
 
-不同于常规软件默认的 `5 / 10 / 20 / 60` 均线，本体系采用斐波那契数列（Fibonacci Sequence）构建**短、中、长三族共 8 条均线**，贴合市场自然情绪与时间对称周期：
+### How to Read This Example / 极简读图与操作示例
 
-| 均线分族 | 参数周期 | 图表颜色 | 核心角色定位 |
+1. **🟠 When to Trim Position (破线减仓 — `Break Below MA21`)**
+   - **[EN]** During an uptrend, **`MA21` (bold magenta)** serves as the short-to-medium wave defense line. When `NVDA` closes decisively below `MA21` (e.g., at **`\$212.3`** in late May or **`\$221.3`** in mid-October) and short-term moving averages turn downward, **trim/reduce position** to lock in gains and avoid deeper pullbacks.
+   - **[中文]** 在上升波段中，**`21日均线`（紫色加粗）** 是短中线波段的防守减仓线。当英伟达日 K 线有效跌破 `MA21`（如图中 5 月下旬跌破 **`\$212.3`** 或 10 月中旬跌破 **`\$221.3`**），且短期抵扣价处于高位形成压制时，应当**先行减仓防守**，规避后续回调。
+
+2. **🟢 When to Add Position (多指标共振加仓 — `KDJ Passivation + BOLL Lower + MACD`)**
+   - **[EN]** Instead of guessing the bottom with a single indicator, wait for **triple resonance** near major Fibonacci moving averages (`MA144` / `MA233`):
+     1. **KDJ Oversold Passivation**: `J` line flattens near `0` (clamped inside `[0, 100]`) inside the green shaded oversold zone (`<20`).
+     2. **Bollinger Band Support (`BOLL`)**: Price touches or pierces the **BOLL Lower Band (`下轨支撑`)** and stabilizes.
+     3. **MACD Momentum Recovery**: Bearish green histogram bars stop expanding and start shrinking (`绿柱缩短 / 动能衰竭`) or form a bullish crossover (`DIF` turns up toward `DEA`).
+   - **[中文]** 回调何时加仓？不靠主观猜底，而是等待**底部三指标共振**（如图中 **`\$200.4`** 与 **`\$190.0`** 回踩 `MA144/233` 牛熊线区域）：
+     1. **KDJ 底部钝化**：`J` 值打穿极值并在 `0` 附近连续走平钝化（绿色阴影区），代表短线抛压极致宣泄；
+     2. **BOLL 布林下轨支撑**：股价触及或瞬间刺穿 **布林带下轨（`BOLL Lower`）** 后收脚企稳；
+     3. **MACD 动能转强**：底部绿柱不再放大并开始缩短（背离或即将金叉），结合大均线（`MA144/233`）走平托底，构成高胜率的**波段加仓点**。
+
+---
+
+## 🧭 Core Framework Explanation / 核心体系概念简述
+
+### 1. Fibonacci Moving Average Matrix / 斐波那契均线簇
+
+**[EN]** Instead of arbitrary `5 / 10 / 20 / 60` moving averages, GoldenSpiral uses numbers from the **Fibonacci sequence** (`5, 13, 21, 34, 55, 144, 233, 623`) to capture natural market rhythm across three horizons:  
+**[中文]** 本体系采用斐波那契自然数列构建**短、中、长三族均线**，替代传统的 `5/10/20/60` 均线：
+
+| Group / 分族 | Periods / 周期参数 | Chart Color / 颜色 | Role & Meaning / 核心作用解释 |
 | :--- | :--- | :--- | :--- |
-| **短线族** | **MA5 / MA13 / MA21** | 白 / 黄 / 紫 | 反映短期资金攻击斜率、强势回调承接与小波段节奏 |
-| **中线族** | **MA34（加粗）/ MA55** | **绿（生命线）** / 青 | **MA34 为波段多空生命线**，决定中期持仓与防御边界 |
-| **长线族** | **MA144 / MA233（加粗）/ MA623** | **橙 / 红（牛熊线）** / 蓝紫 | 刻画大级别牛熊成本中枢、长期趋势底座与空间极值 |
+| **Short-Term / 短线族** | **`MA5` / `MA13` / `MA21`** | White / Gold / **Magenta** | Tracks short-term momentum. **`MA21` is the active wave trim/defense line.**<br>反映短期攻击斜率；其中 **`MA21` 为波段减仓防守线**。 |
+| **Medium-Term / 中线族** | **`MA34` (Bold) / `MA55`** | **Green** / Cyan | **`MA34` is the Lifeline (`生命线`)** defining medium-term bull vs. bear structure.<br>**`MA34` 为中线多空生命线**，决定波段趋势的强弱分界。 |
+| **Long-Term / 长线族** | **`MA144` / `MA233` / `MA623`** | **Orange** / **Red** / Blue | **`MA144` & `MA233` are Bull-Bear Boundaries (`牛熊分界线`)** acting as institutional cost bases.<br>**`MA144/233` 为大周期牛熊线**，往往在深度回调时提供强力支撑底座。 |
 
 ---
 
-### 2. “向右看”：间隔线与抵扣价推演原理
+### 2. "Lookahead" Differential Deduction / “向右看”间隔线抵扣价推演
 
-对于任意周期为 $N$ 的均线，今日均线值与昨日均线值的变化量 $\Delta \text{MA}(N)$ 满足严格的数学恒等式：
+**[EN]** A Simple Moving Average (SMA) of period $N$ changes from yesterday to today according to the exact mathematical identity:  
+**[中文]** 周期为 $N$ 的均线，每日斜率变化量 $\Delta \text{MA}(N)$ 由以下一阶差分公式严格决定：
 
 $$\Delta \text{MA}(N) = \text{MA}_t(N) - \text{MA}_{t-1}(N) = \frac{C_t - C_{t-N}}{N}$$
 
-其中：
-- $C_t$：当前最新收盘价（现价）
-- $C_{t-N}$：往前数第 $N$ 根 K 线的收盘价，即**抵扣价（间隔线位置）**
-
-**直观推论**：
-- **均线向上助涨**：当 `现价 > 抵扣价`（且未来数日抵扣价处于历史低位区）时，哪怕价格横盘，均线也会加速上翘提供支撑。
-- **均线走平刹车**：当大跌后的均线即将进入低位抵扣区（`现价 ≈ 抵扣价`）时，陡峭下行的均线将自然减速走平，形成“刹车线”。
-- **均线向下压制**：当 `现价 < 抵扣价`（且未来数日即将抵扣历史高位峰区）时，均线将面临下拐压力，单根大阳线强行穿越多条下行均线往往伴随回踩揉搓。
+- **$C_t$ (`Close / 现价`)**: Today's closing price. / 当日最新收盘价。
+- **$C_{t-N}$ (`Deduction Price / 抵扣价`)**: The closing price $N$ bars ago (marked as `D21/抵21`, `D34/抵34`, `D55/抵55` on the chart). / 往前数第 $N$ 根 K 线的收盘价（即图上标注的“间隔线抵扣位”）。
+- **Key Insight / 实战推演意义**:
+  - If **$C_t > C_{t-N}$**, the moving average **must slope upward** (`向上助涨`), acting as dynamic support.
+  - If **$C_t < C_{t-N}$**, the moving average **must slope downward** (`向下压制`), acting as overhead resistance.
 
 ---
 
-### 3. 极值截断 KDJ 与双轨隔离设计
+## 🚀 Quick Start / 快速运行指南
 
-- **KDJ 钝化截断 (0~100)**：将传统 KDJ(14,3,3) 的数值严格约束在 `[0, 100]` 区间内，用于观察单边趋势中的高位钝化与波段末端的极值衰竭。
-- **双轨解耦原则**：在系统架构上，将**中长线趋势波段**（依托大周期均线与抵扣价演进）与**超短线情绪博弈**彻底分离，避免不同周期的交易逻辑相互干扰。
-
----
-
-## 三、可视化示例 (Demo Preview)
-
-运行 `python3 demo.py` 生成的暗色风格斐波那契八均线、抵扣价标记（`抵5`、`抵13`、`抵34` 等）及钝化 KDJ 示意图：
-
-![GoldenSpiral Demo Chart](samples/demo_chart.png)
-
----
-
-## 四、快速体验
-
-### 1. 安装依赖
+### 1. Install Dependencies / 安装依赖
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. 运行演示脚本
+### 2. Run the Showcase Demo / 运行演示脚本
 ```bash
-# 方式 A：使用内置模拟波浪数据一键生成推演表与图表（默认无需联网）
+# Default: Analyze NVIDIA (NVDA) using bundled snapshot (works offline out of the box)
+# 默认：使用内置的英伟达 (NVDA) 真实日线快照一键生成推演表与四宫格指标图
 python3 demo.py
 
-# 方式 B：传入 6 位 A 股代码，通过开源接口拉取前复权日线进行可视化演示
+# Optional: Pass any US or A-share ticker to fetch live data via AKShare
+# 可选：传入其他美股或 A 股代码在线拉取分析
+python3 demo.py AAPL
 python3 demo.py 600519
 ```
 
-终端将输出各条均线的抵扣日期、抵扣价格及斜率推演方向：
-
+### 3. Sample Console Output / 终端输出示例
 ```text
-====================================================================
-  GoldenSpiral (黄金螺旋) 均线与抵扣价推演系统 - 公开演示版 Demo
-====================================================================
-[+] “向右看”抵扣价差分推演表 (ΔMA = (现价 - 抵扣价) / N):
---------------------------------------------------------------------
-    MA(  5) | 抵扣日: 2026-10-17 | 抵扣价:    42.63 | 差值:    -2.11 -> 向下压制 (现价 < 抵扣价)
-    MA( 13) | 抵扣日: 2026-10-05 | 抵扣价:    43.88 | 差值:    -3.36 -> 向下压制 (现价 < 抵扣价)
-    MA( 21) | 抵扣日: 2026-09-24 | 抵扣价:    43.51 | 差值:    -2.99 -> 向下压制 (现价 < 抵扣价)
-    MA( 34) | 抵扣日: 2026-09-05 | 抵扣价:    46.03 | 差值:    -5.51 -> 向下压制 (现价 < 抵扣价)
-    MA( 55) | 抵扣日: 2026-08-06 | 抵扣价:    46.14 | 差值:    -5.62 -> 向下压制 (现价 < 抵扣价)
-    MA(144) | 抵扣日: 2026-03-29 | 抵扣价:    34.45 | 差值:    +6.07 -> 向上助涨 (现价 > 抵扣价)
-    MA(233) | 抵扣日: 2025-11-20 | 抵扣价:    32.37 | 差值:    +8.15 -> 向上助涨 (现价 > 抵扣价)
-    MA(623) | 抵扣日: 2024-05-04 | 抵扣价:    21.62 | 差值:   +18.90 -> 向上助涨 (现价 > 抵扣价)
---------------------------------------------------------------------
+============================================================================
+  GoldenSpiral (黄金螺旋) Public Demo — NVDA Daily K-Line Analysis
+============================================================================
+[+] Latest Bar / 最新行情 (2026-10-22):
+    Close / 收盘: $212.21 | MA21: $226.17 | MA34: $224.30
+    BOLL Lower / 布林下轨: $210.16 | KDJ(J): 3.9 | MACD: -4.08
+
+[+] Lookahead Deduction Table / “向右看”抵扣价差分推演表:
+----------------------------------------------------------------------------
+    MA(  5) | Deduct Date: 2026-10-16 | Deduct Price: $ 214.13 | Diff:   -1.92 -> Bearish Pressure / 向下压制
+    MA( 13) | Deduct Date: 2026-10-06 | Deduct Price: $ 239.24 | Diff:  -27.03 -> Bearish Pressure / 向下压制
+    MA( 21) | Deduct Date: 2026-09-24 | Deduct Price: $ 224.58 | Diff:  -12.37 -> Bearish Pressure / 向下压制
+    MA( 34) | Deduct Date: 2026-09-04 | Deduct Price: $ 230.36 | Diff:  -18.15 -> Bearish Pressure / 向下压制
+    MA( 55) | Deduct Date: 2026-08-06 | Deduct Price: $ 218.99 | Diff:   -6.78 -> Bearish Pressure / 向下压制
+    MA(144) | Deduct Date: 2026-03-30 | Deduct Price: $ 164.92 | Diff:  +47.29 -> Bullish Slope / 向上助涨
+    MA(233) | Deduct Date: 2025-11-18 | Deduct Price: $ 181.09 | Diff:  +31.12 -> Bullish Slope / 向上助涨
+    MA(623) | Deduct Date: 2024-04-30 | Deduct Price: $  86.07 | Diff: +126.14 -> Bullish Slope / 向上助涨
+----------------------------------------------------------------------------
 ```
 
 ---
 
-## 免责声明
-本仓库仅作为量化可视化与 AI Agent Skill 结构的公开技术演示，不构成任何投资建议。
+## ⚠️ Disclaimer / 免责声明
+**[EN]** This repository is for educational, quantitative visualization, and AI Agent Skill demonstration purposes only. Nothing herein constitutes financial or investment advice.  
+**[中文]** 本仓库仅用于量化可视化与 AI Agent Skill 结构的公开技术演示，不构成任何投资或买卖建议。

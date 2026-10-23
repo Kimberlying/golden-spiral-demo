@@ -1,26 +1,26 @@
 ---
 name: golden-spiral-demo
-description: GoldenSpiral（黄金螺旋）斐波那契均线簇与“向右看”抵扣价差分推演公开演示版 Skill。提供 8 条斐波那契均线（5/13/21/34/55/144/233/623）、抵扣价拐点推演与可视化出图示例。
+description: Bilingual (EN/中文) public showcase of the GoldenSpiral (黄金螺旋) trading analysis skill. Demonstrates Fibonacci Moving Averages (5/13/21/34/55/144/233/623), Lookahead Deduction (抵扣价推演), and Multi-Indicator Resonance (BOLL + KDJ + MACD) on NVIDIA (NVDA) Daily K-lines.
 ---
 
-# GoldenSpiral（黄金螺旋）均线与抵扣价推演系统 (Public Demo)
+# GoldenSpiral (黄金螺旋) — Public Demo Skill (EN / 中文)
 
-> **版本说明**：本仓库为 **GoldenSpiral Skill 的公开概念演示版（Public Showcase Edition）**，仅展示斐波那契均线框架、抵扣价数学推演原理及可视化出图 Demo。完整的盘口微观规则、全套单课知识卡片及实盘战法参数保存在私有库中。
+> **Public Showcase Notice / 公开版说明**  
+> This is the sanitized public demo of the **GoldenSpiral** skill. Full proprietary course cards, Level-2 order-book rules, and private strategy parameters are maintained in a separate private repository.  
+> 本文件为 **GoldenSpiral Skill** 的公开演示版入口，仅包含斐波那契均线、抵扣价差分推演及 `BOLL + KDJ + MACD` 多指标共振的示例逻辑。
 
-## 核心概念
-1. **斐波那契均线簇（8-MA Matrix）**
-   - **短线族**：`MA5`、`MA13`、`MA21`（反映短期资金动能与波段节奏）
-   - **中线族**：`MA34`（生命线）、`MA55`（反映中期趋势方向与强弱分水岭）
-   - **长线族**：`MA144`、`MA233`、`MA623`（反映牛熊大周期成本与长期支撑/压制）
-2. **“向右看”抵扣价差分推演（Lookahead Deduction）**
-   - 均线斜率的本质取决于当日收盘价 $C_t$ 与 $N$ 周期前抵扣价 $C_{t-N}$ 的大小关系：
-     $$\Delta \text{MA}(N) = \frac{C_t - C_{t-N}}{N}$$
-   - 当 $C_t > C_{t-N}$ 时，均线向上助涨；当 $C_t < C_{t-N}$ 时，均线向下压制。通过观察未来几日即将抵扣的高低位价格，可提前预判均线拐点。
-3. **双轨架构原则**
-   - 趋势波段操作与超短线情绪博弈严格解耦，不混用周期与止损标准。
+## Core Rules Demonstrated / 公开演示核心规则
 
-## 快速运行 Demo
-```bash
-python3 demo.py          # 使用内置模拟数据生成斐波那契均线与抵扣价推演图
-python3 demo.py 600519   # （可选）通过 AKShare 拉取指定 A 股代码进行可视化演示
-```
+1. **Fibonacci Moving Averages / 斐波那契均线簇 (`5, 13, 21, 34, 55, 144, 233, 623`)**
+   - **`MA21` (Trim Line / 减仓线)**: Short-to-medium wave defense line. Break below `MA21` triggers position trimming (`跌破 21 日线减仓`).
+   - **`MA34` (Lifeline / 生命线)**: Core medium-term bull/bear dividing line.
+   - **`MA144` & `MA233` (Bull-Bear Lines / 牛熊分界线)**: Long-term institutional support base.
+
+2. **Lookahead Differential Deduction / “向右看”抵扣价推演**
+   - $\Delta \text{MA}(N) = (C_t - C_{t-N}) / N$. Compare current price $C_t$ with the historical deduction price $C_{t-N}$ to anticipate MA inflection points.
+
+3. **Multi-Indicator Dip-Adding Resonance / 多指标共振加仓 (`KDJ` + `BOLL` + `MACD`)**
+   - When price pulls back to major support (`MA144/233` or **`BOLL` Lower Band**), **`KDJ` enters oversold passivation** (`J` near `0`, clamped to `[0, 100]`), and **`MACD` bearish momentum shrinks/turns up**, it signals a high-probability zone to add position (`指标共振加仓`).
+
+## Execution / 运行命令
+- `python3 demo.py` — Generates the 4-panel bilingual showcase chart (`samples/nvda_demo_chart.png`) and lookahead deduction table for `NVDA`.

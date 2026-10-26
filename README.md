@@ -9,7 +9,7 @@
 # GoldenSpiral — Fibonacci MA & Multi-Indicator Resonance Demo
 
 > **Public Showcase Edition**  
-> This repository is a lightweight public showcase of the **GoldenSpiral AI Agent Skill**. It demonstrates the core **Fibonacci Moving Average Matrix**, **Lookahead Differential Deduction**, and **Multi-Indicator Resonance (`BOLL` + `KDJ` + `MACD`)** using **NVIDIA (`NVDA`)** Daily K-lines as a case study. Proprietary intraday order-book rules and full course materials are maintained in a separate private repository.
+> This repository is a lightweight public showcase of the **GoldenSpiral AI Agent Skill**. It demonstrates the core **Fibonacci Moving Average Matrix**, **Lookahead Differential Deduction**, and **Multi-Indicator Resonance (`BOLL89` + `KDJ` + `MACD`)** using **NVIDIA (`NVDA`)** Daily K-lines as a case study. Proprietary intraday order-book rules and full course materials are maintained in a separate private repository.
 
 ---
 
@@ -23,12 +23,12 @@
    - During an uptrend, **`MA21` (bold magenta)** serves as the short-to-medium wave defense line.
    - When `NVDA` closes decisively below `MA21` (for example, at **`\$212.3`** in late May or **`\$221.3`** in mid-October) and short-term moving averages turn downward under high deduction-price pressure, **trim or reduce positions** to lock in gains and guard against deeper pullbacks.
 
-2. **🟢 When to Add Position (`KDJ Passivation + BOLL Lower + MACD Turn`)**
+2. **🟢 When to Add Position (`KDJ Passivated + BOLL89 + MACD Turn`)**
    - Instead of guessing the bottom with a single indicator, wait for **multi-indicator resonance** near major Fibonacci moving averages (`MA144` / `MA233`):
      1. **KDJ Oversold Passivation**: The `J` line flattens near `0` (clamped inside `[0, 100]`) within the green shaded oversold zone (`<= 10`), signaling that short-term selling pressure is exhausted.
-     2. **Bollinger Band Support (`BOLL`)**: Price touches or briefly pierces the **BOLL Lower Band** and stabilizes.
+     2. **89-Period Bollinger Band Support (`BOLL 89, 2`)**: Price pulls back into the **`BOLL89` middle-to-lower support zone (`MA89` / Lower Band)** and stabilizes.
      3. **MACD Momentum Recovery**: Bearish green histogram bars stop expanding and start shrinking, or `DIF` turns upward toward `DEA`.
-   - As shown on the chart at **`\$200.4`** (early June) and **`\$190.0`** (late July), this triple-indicator alignment right above the rising `MA144/233` bull-bear lines marks a high-probability zone to add positions.
+   - As shown on the chart at **`\$192.5`** (late June) and **`\$190.0`** (late July), this triple-indicator alignment right above the rising `MA144/233` bull-bear lines marks a high-probability zone to add positions.
 
 ---
 
@@ -91,7 +91,7 @@ python3 demo.py AAPL --lang en
 
 [+] Latest Market Bar (2026-10-22):
     Close: $212.21 | MA21 (Trim Line): $226.17 | MA34 (Lifeline): $224.30
-    BOLL Lower: $210.16 | KDJ (J): 3.9 | MACD Hist: -4.08
+    BOLL89 Mid: $215.09 | BOLL89 Lower: $191.31 | KDJ (J): 3.9 | MACD Hist: -4.08
 
 [+] Lookahead Differential Deduction Table (ΔMA = (Close - Deduct) / N):
 ------------------------------------------------------------------------------
@@ -115,7 +115,7 @@ This repository is for educational, quantitative visualization, and AI Agent Ski
 # GoldenSpiral (黄金螺旋) — 斐波那契均线簇与多指标共振公开演示版
 
 > **公开演示版说明**  
-> 本仓库是 **GoldenSpiral AI Agent Skill** 的公开概念演示版本。以 **英伟达 (`NVDA`)** 日 K 线为例，展示**斐波那契均线簇**、**“向右看”抵扣价差分推演**以及 **底部多指标共振（`BOLL` + `KDJ` + `MACD`）** 的可视化分析逻辑。完整的盘口微观规则与内部资料保存在私有库中，不对外公开。
+> 本仓库是 **GoldenSpiral AI Agent Skill** 的公开概念演示版本。以 **英伟达 (`NVDA`)** 日 K 线为例，展示**斐波那契均线簇**、**“向右看”抵扣价差分推演**以及 **底部多指标共振（`BOLL89` + `KDJ` + `MACD`）** 的可视化分析逻辑。完整的盘口微观规则与内部资料保存在私有库中，不对外公开。
 
 ---
 
@@ -129,12 +129,12 @@ This repository is for educational, quantitative visualization, and AI Agent Ski
    - 在上升趋势波段中，**`MA21`（21日均线，紫色加粗）** 是短中线波段的减仓防守线。
    - 当英伟达日 K 线有效跌破 `MA21`（如图中 5 月下旬跌破 **`\$212.3`** 或 10 月中旬跌破 **`\$221.3`**），且短期抵扣价处于历史高位形成压制时，应当**先行减仓防守**，锁定波段利润并规避后续回调。
 
-2. **🟢 何时加仓低吸（`KDJ钝化 + 布林下轨 + MACD企稳 -> 多指标共振加仓`）**
+2. **🟢 何时加仓低吸（`KDJ钝化 + BOLL89支撑 + MACD企稳 -> 多指标共振加仓`）**
    - 回调过程中不靠主观猜底，而是等待股价回踩大周期牛熊线（`MA144` / `MA233`）附近时出现**三重指标共振**：
      1. **KDJ 底部钝化**：`J` 值打穿极值并在 `0` 附近连续走平钝化（图中绿色阴影区 `J <= 10`），代表短线抛压已极致宣泄；
-     2. **布林带下轨支撑（`BOLL`）**：股价触及或瞬间刺穿**布林下轨**后收脚企稳；
+     2. **89周期斐波那契布林带支撑（`BOLL 89, 2`）**：股价回踩至 **`BOLL89` 中下轨支撑带（`MA89` 中轨至下轨区间）** 并收脚企稳；
      3. **MACD 动能转强**：底部绿柱不再放大并开始缩短（空头动能衰竭）或快慢线拐头收敛。
-   - 如图中 6 月上旬 **`\$200.4`** 与 7 月底 **`\$190.0`** 两个位置，均在大均线托底背景下触发三指标共振，构成高胜率的波段加仓区。
+   - 如图中 6 月下旬 **`\$192.5`** 与 7 月底 **`\$190.0`** 两个位置，均在大均线托底背景下触发三指标共振，构成高胜率的波段加仓区。
 
 ---
 
@@ -194,7 +194,7 @@ python3 demo.py NVDA --lang en
 
 [+] 最新交易日行情 (2026-10-22):
     收盘价: $212.21 | MA21(减仓线): $226.17 | MA34(生命线): $224.30
-    布林下轨: $210.16 | KDJ(J值): 3.9 | MACD柱: -4.08
+    BOLL89中轨: $215.09 | BOLL89下轨: $191.31 | KDJ(J值): 3.9 | MACD柱: -4.08
 
 [+] “向右看”抵扣价差分推演表 (ΔMA = (现价 - 抵扣价) / N):
 --------------------------------------------------------------------------

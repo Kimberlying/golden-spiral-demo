@@ -18,8 +18,8 @@ description: Public showcase of the GoldenSpiral trading analysis skill. Demonst
 2. **Lookahead Differential Deduction**
    - $\Delta \text{MA}(N) = (C_t - C_{t-N}) / N$. Compare current closing price $C_t$ with the historical deduction price $C_{t-N}$ to anticipate moving average inflection points before crossovers occur.
 
-3. **Multi-Indicator Dip-Adding Resonance (`BOLL` + `KDJ` + `MACD`)**
-   - When price pulls back to major support (`MA144/233` or the **BOLL Lower Band**), **KDJ enters oversold passivation** (`J <= 10`, clamped to `[0, 100]`), and **MACD bearish momentum shrinks or turns upward**, it signals a high-probability zone to add positions.
+3. **Multi-Indicator Dip-Adding Resonance (`BOLL89` + `KDJ` + `MACD`)**
+   - When price pulls back to major support (`MA144/233` and the **89-period Bollinger Band `BOLL(89, 2)` support zone**), **KDJ enters oversold passivation** (`J <= 10`, clamped to `[0, 100]`), and **MACD bearish momentum shrinks or turns upward**, it signals a high-probability zone to add positions.
 
 ## Execution
 - `python3 demo.py NVDA --lang en` — Generates the 4-panel English showcase chart (`samples/nvda_demo_en.png`) and lookahead deduction table.
@@ -42,8 +42,8 @@ description: Public showcase of the GoldenSpiral trading analysis skill. Demonst
 2. **“向右看”抵扣价差分推演**
    - $\Delta \text{MA}(N) = (C_t - C_{t-N}) / N$。通过对比当前收盘价 $C_t$ 与 $N$ 日前抵扣价 $C_{t-N}$，提前预判均线助涨或压制拐点。
 
-3. **多指标共振加仓 (`BOLL` + `KDJ` + `MACD`)**
-   - 当股价回踩大均线（`MA144/233`）或触及**布林下轨（BOLL Lower）**企稳，同时 **KDJ 进入底部钝化区**（`J <= 10`，极值截断于 `[0, 100]`），且 **MACD 绿柱缩短或快慢线拐头**时，构成高胜率波段加仓区。
+3. **多指标共振加仓 (`BOLL89` + `KDJ` + `MACD`)**
+   - 当股价回踩大均线（`MA144/233`）并进入 **89周期布林带 `BOLL(89, 2)` 支撑带**企稳，同时 **KDJ 进入底部钝化区**（`J <= 10`，极值截断于 `[0, 100]`），且 **MACD 绿柱缩短或快慢线拐头**时，构成高胜率波段加仓区。
 
 ## 运行命令
 - `python3 demo.py NVDA --lang zh` — 生成纯中文四宫格演示图表（`samples/nvda_demo_zh.png`）与中文抵扣价推演表。

@@ -69,16 +69,16 @@ def load_stock_data(symbol="NVDA", bars=800, lang="en"):
 
 
 def compute_all_indicators(df):
-    """Compute Fibonacci MAs, BOLL(20,2), Passivated KDJ(14,3,3), and MACD(12,26,9)."""
+    """Compute Fibonacci MAs, BOLL(89,2), Passivated KDJ(14,3,3), and MACD(12,26,9)."""
     df = df.copy()
 
     # 1. Fibonacci Moving Averages
     for p in MA_PERIODS:
         df[f'MA{p}'] = df['close'].rolling(window=p, min_periods=1).mean()
 
-    # 2. Bollinger Bands (BOLL 20, 2)
-    df['BOLL_MID'] = df['close'].rolling(window=20, min_periods=1).mean()
-    boll_std = df['close'].rolling(window=20, min_periods=1).std().fillna(0)
+    # 2. Bollinger Bands (BOLL 89, 2)
+    df['BOLL_MID'] = df['close'].rolling(window=89, min_periods=1).mean()
+    boll_std = df['close'].rolling(window=89, min_periods=1).std().fillna(0)
     df['BOLL_UP'] = df['BOLL_MID'] + 2.0 * boll_std
     df['BOLL_LOW'] = df['BOLL_MID'] - 2.0 * boll_std
 
@@ -206,22 +206,23 @@ def plot_showcase_chart(df, deductions, out_path, symbol="NVDA", view_bars=120, 
                 bbox=dict(boxstyle='round,pad=0.3', facecolor='#161b22', edgecolor='#ff9500', alpha=0.92)
             )
 
-    # Dip-Add Signal Callouts (KDJ Passivated + BOLL Lower + MACD Turn)
-    dip_candidates = sub[(sub['J'] <= 5.0) & (sub['low'] <= sub['BOLL_LOW'] * 1.02) & (sub.index > 20)]
+    # Dip-Add Signal Callouts (KDJ Passivated + BOLL89 Support + MACD Turn)
+    dip_candidates = sub[(sub['J'] <= 5.0) & (sub['low'] <= sub['BOLL_MID']) & (sub.index > 30)]
     if not dip_candidates.empty:
         chosen_dips = [dip_candidates.index[0]]
         for idx_d in dip_candidates.index:
-            if idx_d - chosen_dips[-1] > 20:
+            if idx_d - chosen_dips[-1] > 18:
                 chosen_dips.append(idx_d)
-        for idx_d in chosen_dips[:2]:
+        for k_i, idx_d in enumerate(chosen_dips[:2]):
             row_d = sub.loc[idx_d]
-            text_d = (f"KDJ钝化 + 布林下轨 + MACD企稳\n多指标共振加仓 (${row_d['close']:.1f})"
+            text_d = (f"KDJ钝化 + BOLL89支撑 + MACD企稳\n多指标共振加仓 (${row_d['close']:.1f})"
                       if lang == "zh" else
-                      f"KDJ Passivated + BOLL Low + MACD Turn\nMulti-Indicator Add Zone (${row_d['close']:.1f})")
+                      f"KDJ Passivated + BOLL89 + MACD Turn\nMulti-Indicator Add Zone (${row_d['close']:.1f})")
+            x_text_pos = max(2, idx_d - 24) if k_i == 0 else min(len(sub) - 32, idx_d + 1)
             ax_main.annotate(
                 text_d,
                 xy=(idx_d, row_d['low']),
-                xytext=(min(len(sub) - 30, idx_d - 6), row_d['low'] - 13),
+                xytext=(x_text_pos, row_d['low'] - 13),
                 arrowprops=dict(facecolor='#00e676', edgecolor='#00e676', arrowstyle='->', lw=1.5),
                 fontsize=8.5, fontweight='bold', color='#00e676',
                 bbox=dict(boxstyle='round,pad=0.3', facecolor='#161b22', edgecolor='#00e676', alpha=0.92)
@@ -240,19 +241,19 @@ def plot_showcase_chart(df, deductions, out_path, symbol="NVDA", view_bars=120, 
     ax_main.grid(True, color='#21262d', linestyle=':', linewidth=0.6)
     ax_main.tick_params(colors='#8b949e', labelbottom=False)
 
-    # --- Panel 2: BOLL (Bollinger Bands 20, 2) ---
+    # --- Panel 2: BOLL (Bollinger Bands 89, 2) ---
     if lang == "zh":
         ax_boll.plot(sub.index, sub['close'], color='#FFFFFF', linewidth=1.1, label='收盘价')
-        ax_boll.plot(sub.index, sub['BOLL_UP'], color='#ff6b6b', linestyle='--', linewidth=1.0, label='布林上轨 (Upper)')
-        ax_boll.plot(sub.index, sub['BOLL_MID'], color='#ffd166', linewidth=1.0, label='布林中轨 (MA20)')
-        ax_boll.plot(sub.index, sub['BOLL_LOW'], color='#00e676', linestyle='--', linewidth=1.2, label='布林下轨支撑 (Lower)')
-        ax_boll.set_ylabel("BOLL (布林带)", color='#8b949e', fontsize=9)
+        ax_boll.plot(sub.index, sub['BOLL_UP'], color='#ff6b6b', linestyle='--', linewidth=1.0, label='BOLL89 上轨')
+        ax_boll.plot(sub.index, sub['BOLL_MID'], color='#ffd166', linewidth=1.1, label='BOLL89 中轨 (MA89)')
+        ax_boll.plot(sub.index, sub['BOLL_LOW'], color='#00e676', linestyle='--', linewidth=1.2, label='BOLL89 下轨')
+        ax_boll.set_ylabel("BOLL (89, 2)", color='#8b949e', fontsize=9)
     else:
         ax_boll.plot(sub.index, sub['close'], color='#FFFFFF', linewidth=1.1, label='Close Price')
-        ax_boll.plot(sub.index, sub['BOLL_UP'], color='#ff6b6b', linestyle='--', linewidth=1.0, label='BOLL Upper Band')
-        ax_boll.plot(sub.index, sub['BOLL_MID'], color='#ffd166', linewidth=1.0, label='BOLL Middle (MA20)')
-        ax_boll.plot(sub.index, sub['BOLL_LOW'], color='#00e676', linestyle='--', linewidth=1.2, label='BOLL Lower Support')
-        ax_boll.set_ylabel("BOLL (20, 2)", color='#8b949e', fontsize=9)
+        ax_boll.plot(sub.index, sub['BOLL_UP'], color='#ff6b6b', linestyle='--', linewidth=1.0, label='BOLL89 Upper Band')
+        ax_boll.plot(sub.index, sub['BOLL_MID'], color='#ffd166', linewidth=1.1, label='BOLL89 Middle (MA89)')
+        ax_boll.plot(sub.index, sub['BOLL_LOW'], color='#00e676', linestyle='--', linewidth=1.2, label='BOLL89 Lower Band')
+        ax_boll.set_ylabel("BOLL (89, 2)", color='#8b949e', fontsize=9)
 
     ax_boll.fill_between(sub.index, sub['BOLL_LOW'], sub['BOLL_UP'], color='#58a6ff', alpha=0.08)
     ax_boll.legend(loc='upper left', ncol=4, facecolor='#161b22', edgecolor='#30363d', labelcolor='#e6edf3', fontsize=8)
@@ -315,7 +316,7 @@ def print_report(df, deductions, symbol="NVDA", lang="en"):
         print("=" * 74)
         print(f"\n[+] 最新交易日行情 ({latest['date']}):")
         print(f"    收盘价: ${latest['close']:.2f} | MA21(减仓线): ${latest['MA21']:.2f} | MA34(生命线): ${latest['MA34']:.2f}")
-        print(f"    布林下轨: ${latest['BOLL_LOW']:.2f} | KDJ(J值): {latest['J']:.1f} | MACD柱: {latest['MACD']:.2f}")
+        print(f"    BOLL89中轨: ${latest['BOLL_MID']:.2f} | BOLL89下轨: ${latest['BOLL_LOW']:.2f} | KDJ(J值): {latest['J']:.1f} | MACD柱: {latest['MACD']:.2f}")
         print("\n[+] “向右看”抵扣价差分推演表 (ΔMA = (现价 - 抵扣价) / N):")
         print("-" * 74)
         for d in deductions:
@@ -328,7 +329,7 @@ def print_report(df, deductions, symbol="NVDA", lang="en"):
         print("=" * 78)
         print(f"\n[+] Latest Market Bar ({latest['date']}):")
         print(f"    Close: ${latest['close']:.2f} | MA21 (Trim Line): ${latest['MA21']:.2f} | MA34 (Lifeline): ${latest['MA34']:.2f}")
-        print(f"    BOLL Lower: ${latest['BOLL_LOW']:.2f} | KDJ (J): {latest['J']:.1f} | MACD Hist: {latest['MACD']:.2f}")
+        print(f"    BOLL89 Mid: ${latest['BOLL_MID']:.2f} | BOLL89 Lower: ${latest['BOLL_LOW']:.2f} | KDJ (J): {latest['J']:.1f} | MACD Hist: {latest['MACD']:.2f}")
         print("\n[+] Lookahead Differential Deduction Table (ΔMA = (Close - Deduct) / N):")
         print("-" * 78)
         for d in deductions:
